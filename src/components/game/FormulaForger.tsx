@@ -15,10 +15,10 @@ interface FormulaForgerProps {
 
 export function FormulaForger({ phase, onSuccess }: FormulaForgerProps) {
   const router = useRouter();
-  
+
   // slots state: array of length `slotsCount`, holding Rune objects or null
   const [slots, setSlots] = useState<(Rune | null)[]>(Array(phase.slotsCount).fill(null));
-  
+
   // validation state
   const [validation, setValidation] = useState<"success" | "error" | null>(null);
 
@@ -68,7 +68,7 @@ export function FormulaForger({ phase, onSuccess }: FormulaForgerProps) {
 
   return (
     <div className="flex flex-col h-full max-w-4xl mx-auto w-full p-4 md:p-8 font-mono relative">
-      
+
       {/* Top: Mission Directive */}
       <div className="mb-8">
         <Button variant="ghost" onClick={() => router.push('/')} className="mb-4">
@@ -77,7 +77,7 @@ export function FormulaForger({ phase, onSuccess }: FormulaForgerProps) {
         </Button>
         <div className="bg-black/60 border border-[var(--color-sci-border)] rounded-lg p-6">
           <h2 className="text-[var(--color-sci-accent)] text-xl mb-2 flex items-center gap-2">
-             Missão: {phase.title}
+            Missão: {phase.title}
           </h2>
           <p className="text-[var(--color-sci-text-muted)] text-lg">
             {phase.directive}
@@ -89,13 +89,13 @@ export function FormulaForger({ phase, onSuccess }: FormulaForgerProps) {
       <div className="flex-1 flex flex-col items-center justify-center min-h-[200px] mb-8">
         <div className="flex flex-wrap justify-center gap-4">
           {slots.map((slot, i) => (
-            <div 
+            <div
               key={i}
               onClick={() => handleSlotClick(i)}
               className={cn(
                 "w-24 h-24 md:w-32 md:h-32 flex items-center justify-center border-2 rounded-md cursor-pointer transition-all",
-                slot 
-                  ? "border-[var(--color-sci-accent)] bg-[var(--color-sci-surface)] shadow-[0_0_15px_rgba(0,229,255,0.2)] text-2xl" 
+                slot
+                  ? "border-[var(--color-sci-accent)] bg-[var(--color-sci-surface)] shadow-[0_0_15px_rgba(0,229,255,0.2)] text-2xl"
                   : "border-dashed border-[var(--color-sci-border)] bg-black/40 hover:border-[var(--color-sci-text)]",
                 validation === "error" && "border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.4)]"
               )}
@@ -104,12 +104,12 @@ export function FormulaForger({ phase, onSuccess }: FormulaForgerProps) {
             </div>
           ))}
         </div>
-        
+
         {slots.every(s => s !== null) && validation !== "success" && (
-          <Button 
+          <Button
             onClick={handleValidate}
             className="mt-12 w-64 h-14 text-xl"
-            variant={validation === "error" ? "destructive" : "default"}
+            variant={validation === "error" ? "danger" : "default"}
           >
             {validation === "error" ? "Falha! Tente Novamente" : "Validar Código"}
           </Button>
@@ -140,9 +140,9 @@ export function FormulaForger({ phase, onSuccess }: FormulaForgerProps) {
           <div className="bg-[var(--color-sci-bg)] border-2 border-green-500 rounded-xl p-8 max-w-2xl w-full text-center shadow-[0_0_40px_rgba(34,197,94,0.3)] animate-in fade-in zoom-in duration-300">
             <CheckCircle2 className="w-20 h-20 text-green-500 mx-auto mb-6" />
             <h2 className="text-3xl font-bold text-green-400 mb-6 tracking-widest">FORMULA FORJADA</h2>
-            
+
             <div className="bg-black/50 p-6 rounded-lg border border-green-500/30 mb-8">
-               <BlockMath math={phase.correctSequence.map(id => phase.availableRunes.find(r => r.id === id)?.symbol).join(' ')} />
+              <BlockMath math={phase.correctSequence.map(id => phase.availableRunes.find(r => r.id === id)?.symbol).join(' ')} />
             </div>
 
             <p className="text-lg text-[var(--color-sci-text)] leading-relaxed mb-8">

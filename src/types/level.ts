@@ -55,9 +55,16 @@ export interface GraphConnectPuzzle extends BaseMicroPhase {
   validationRule: GraphValidationRule;
 }
 
+export interface ProofStep {
+  statementId: string;
+  justificationId: string;
+}
+
 export interface ProofBuilderPuzzle extends BaseMicroPhase {
   puzzleType: 'ProofBuilder';
-  // Dados específicos da prova
+  availableStatements: Rune[];
+  availableJustifications: Rune[];
+  expectedProof: ProofStep[];
 }
 
 export type MicroPhase = DefinitionPuzzle | GraphConnectPuzzle | ProofBuilderPuzzle;

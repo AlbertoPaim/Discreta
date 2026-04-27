@@ -63,8 +63,55 @@ export const sector3: Sector = {
       title: "Propriedades Gerais e Provas Formais",
       description: "Prove teoremas avançados usando a Forja de Provas.",
       microPhases: [
-        { id: "3.4.1", puzzleType: "ProofBuilder", title: "Inclusão da Imagem da Pré-imagem", directive: "Prove que f[f⁻¹[Y]] ⊆ Y.", example: "Exemplo: A pré-imagem puxa os geradores de Y, mas aplicar f neles só cobrirá parte de Y se não for sobrejetora.", wisdomText: "Prova concluída com rigor matemático!" } as ProofBuilderPuzzle,
-        { id: "3.4.2", puzzleType: "ProofBuilder", title: "Inclusão da Pré-imagem da Imagem", directive: "Prove que X ⊆ f⁻¹[f[X]].", example: "Exemplo: A imagem de X bate em B, mas ao voltar, a pré-imagem pode puxar 'caronas' se não for injetora.", wisdomText: "Demostração imbatível forjada!" } as ProofBuilderPuzzle,
+        { 
+          id: "3.4.1", 
+          puzzleType: "ProofBuilder", 
+          title: "Inclusão da Imagem da Pré-imagem", 
+          directive: "Prove que f[f⁻¹[Y]] ⊆ Y.", 
+          example: "Exemplo: A pré-imagem puxa os geradores de Y, mas aplicar f neles só cobrirá parte de Y se não for sobrejetora.", 
+          wisdomText: "Prova concluída com rigor matemático!",
+          availableStatements: [
+            { id: "s1", symbol: "y \\in f[f^{-1}[Y]]" },
+            { id: "s2", symbol: "\\exists x \\in f^{-1}[Y] \\text{ tal que } f(x) = y" },
+            { id: "s3", symbol: "x \\in A \\text{ e } f(x) \\in Y" },
+            { id: "s4", symbol: "y \\in Y" }
+          ],
+          availableJustifications: [
+            { id: "j1", symbol: "\\text{Premissa (Seja } y \\text{ um elemento qualquer)}" },
+            { id: "j2", symbol: "\\text{Definição da Imagem } f[X]" },
+            { id: "j3", symbol: "\\text{Definição da Pré-imagem } f^{-1}[Y]" },
+            { id: "j4", symbol: "\\text{Substituição } (f(x) = y)" }
+          ],
+          expectedProof: [
+            { statementId: "s1", justificationId: "j1" },
+            { statementId: "s2", justificationId: "j2" },
+            { statementId: "s3", justificationId: "j3" },
+            { statementId: "s4", justificationId: "j4" }
+          ]
+        } as ProofBuilderPuzzle,
+        { 
+          id: "3.4.2", 
+          puzzleType: "ProofBuilder", 
+          title: "Inclusão da Pré-imagem da Imagem", 
+          directive: "Prove que X ⊆ f⁻¹[f[X]].", 
+          example: "Exemplo: A imagem de X bate em B, mas ao voltar, a pré-imagem pode puxar 'caronas' se não for injetora.", 
+          wisdomText: "Demostração imbatível forjada!",
+          availableStatements: [
+            { id: "s1", symbol: "x \\in X" },
+            { id: "s2", symbol: "f(x) \\in f[X]" },
+            { id: "s3", symbol: "x \\in f^{-1}[f[X]]" }
+          ],
+          availableJustifications: [
+            { id: "j1", symbol: "\\text{Premissa (Seja } x \\text{ um elemento qualquer)}" },
+            { id: "j2", symbol: "\\text{Definição de Imagem Direta}" },
+            { id: "j3", symbol: "\\text{Definição de Pré-imagem}" }
+          ],
+          expectedProof: [
+            { statementId: "s1", justificationId: "j1" },
+            { statementId: "s2", justificationId: "j2" },
+            { statementId: "s3", justificationId: "j3" }
+          ]
+        } as ProofBuilderPuzzle,
         { id: "3.4.3", puzzleType: "GraphConnect", title: "Contraexemplo da Igualdade (Sobrejetividade)", directive: "Apresente um contraexemplo visual para f[f⁻¹[Y]] = Y criando uma função onde f[f⁻¹[B]] ≠ B (requer falha de sobrejetividade).", sets: [setA, setB], mode: 'connect', initialEdges: [], validationRule: 'not_surjective', example: "Exemplo: Deixe um nó de B vazio para ver a igualdade falhar na volta (pois ele não terá origem).", wisdomText: "Falha explorada com sucesso!" } as GraphConnectPuzzle,
         { id: "3.4.4", puzzleType: "GraphConnect", title: "Contraexemplo da Igualdade (Injetividade)", directive: "Apresente um contraexemplo visual para X = f⁻¹[f[X]] criando uma função onde A ≠ f⁻¹[f[A]] (requer falha de injetividade).", sets: [setA, setB], mode: 'connect', initialEdges: [], validationRule: 'not_injective', example: "Exemplo: Ligue dois de A no mesmo de B para ver um pequeno conjunto X trazer elementos extras na volta.", wisdomText: "Contraexemplo incontestável construído!" } as GraphConnectPuzzle,
         { 
@@ -107,8 +154,58 @@ export const sector3: Sector = {
           example: "Exemplo: Se f dá o CEP e g dá a Cidade, (g ∘ f) pega a pessoa e devolve direto a Cidade!",
           wisdomText: "Atenção à ordem: g ∘ f significa que a função f é aplicada primeiro!" 
         } as DefinitionPuzzle,
-        { id: "3.5.2", puzzleType: "ProofBuilder", title: "Composição Injetora", directive: "Prove que se g ∘ f é injetora, então f é obrigatoriamente injetora.", example: "Exemplo: Se o caminho total é sem colisões, a primeira perna (f) não poderia ter colisões.", wisdomText: "Dedução impecável! Se não houver colisão no final, não pode ter havido no início." } as ProofBuilderPuzzle,
-        { id: "3.5.3", puzzleType: "ProofBuilder", title: "Composição Sobrejetora", directive: "Prove que se g ∘ f é sobrejetora, então g é obrigatoriamente sobrejetora.", example: "Exemplo: Se o caminho total cobriu o mapa final, a última perna (g) precisou varrer tudo.", wisdomText: "Lógica irrefutável! O último passo da jornada precisa cobrir todo o destino." } as ProofBuilderPuzzle,
+        { 
+          id: "3.5.2", 
+          puzzleType: "ProofBuilder", 
+          title: "Composição Injetora", 
+          directive: "Prove que se g ∘ f é injetora, então f é obrigatoriamente injetora.", 
+          example: "Exemplo: Se o caminho total é sem colisões, a primeira perna (f) não poderia ter colisões.", 
+          wisdomText: "Dedução impecável! Se não houver colisão no final, não pode ter havido no início.",
+          availableStatements: [
+            { id: "s1", symbol: "f(x_1) = f(x_2)" },
+            { id: "s2", symbol: "g(f(x_1)) = g(f(x_2))" },
+            { id: "s3", symbol: "(g \\circ f)(x_1) = (g \\circ f)(x_2)" },
+            { id: "s4", symbol: "x_1 = x_2" }
+          ],
+          availableJustifications: [
+            { id: "j1", symbol: "\\text{Premissa (Assuma para provar f injetora)}" },
+            { id: "j2", symbol: "\\text{Aplicação da função g em ambos lados}" },
+            { id: "j3", symbol: "\\text{Definição de Composição}" },
+            { id: "j4", symbol: "\\text{Hipótese (g } \\circ \\text{ f é injetora)}" }
+          ],
+          expectedProof: [
+            { statementId: "s1", justificationId: "j1" },
+            { statementId: "s2", justificationId: "j2" },
+            { statementId: "s3", justificationId: "j3" },
+            { statementId: "s4", justificationId: "j4" }
+          ]
+        } as ProofBuilderPuzzle,
+        { 
+          id: "3.5.3", 
+          puzzleType: "ProofBuilder", 
+          title: "Composição Sobrejetora", 
+          directive: "Prove que se g ∘ f é sobrejetora, então g é obrigatoriamente sobrejetora.", 
+          example: "Exemplo: Se o caminho total cobriu o mapa final, a última perna (g) precisou varrer tudo.", 
+          wisdomText: "Lógica irrefutável! O último passo da jornada precisa cobrir todo o destino.",
+          availableStatements: [
+            { id: "s1", symbol: "\\forall z \\in C" },
+            { id: "s2", symbol: "\\exists x \\in A \\text{ tal que } (g \\circ f)(x) = z" },
+            { id: "s3", symbol: "\\exists x \\in A \\text{ tal que } g(f(x)) = z" },
+            { id: "s4", symbol: "\\text{Seja } y = f(x), \\text{ então } g(y) = z" }
+          ],
+          availableJustifications: [
+            { id: "j1", symbol: "\\text{Premissa (Pegue um z no destino final)}" },
+            { id: "j2", symbol: "\\text{Hipótese (g } \\circ \\text{ f é sobrejetora)}" },
+            { id: "j3", symbol: "\\text{Definição de Composição}" },
+            { id: "j4", symbol: "\\text{Conclusão: Existe } y \\in B \\text{ mapeado em } z" }
+          ],
+          expectedProof: [
+            { statementId: "s1", justificationId: "j1" },
+            { statementId: "s2", justificationId: "j2" },
+            { statementId: "s3", justificationId: "j3" },
+            { statementId: "s4", justificationId: "j4" }
+          ]
+        } as ProofBuilderPuzzle,
         { id: "3.5.4", puzzleType: "GraphConnect", title: "Refutando f(x) via Composição", directive: "Crie ligações para f (A->B) e g (B->C) de forma que g ∘ f seja injetora, mas g NÃO seja injetora.", sets: [setA, setB, setC], mode: 'connect', initialEdges: [], validationRule: 'composition_inj_not_inj', example: "Exemplo: Faça 'g' colidir em áreas que a primeira função 'f' nunca atinge.", wisdomText: "Contraexemplo genial! O que acontece na camada de g que f não alcança não afeta a injetividade da composição." } as GraphConnectPuzzle,
         { id: "3.5.5", puzzleType: "GraphConnect", title: "Refutando g(x) via Composição", directive: "Crie ligações para f e g de forma que g ∘ f seja sobrejetora, mas f NÃO seja sobrejetora.", sets: [setA, setB, setC], mode: 'connect', initialEdges: [], validationRule: 'composition_surj_not_surj', example: "Exemplo: 'f' não precisa cobrir todo o meio de campo (B), basta cobrir o suficiente para 'g' varrer C.", wisdomText: "Isso mesmo! 'f' não precisa cobrir todo o conjunto intermediário para que 'g' alcance o destino final inteiro." } as GraphConnectPuzzle,
       ]

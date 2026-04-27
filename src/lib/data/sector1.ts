@@ -159,7 +159,20 @@ export const sector1: Sector = {
           title: "As Leis de De Morgan",
           directive: "Prove que não(p ou q) é equivalente a (não p) e (não q).",
           example: "Exemplo: Negar que 'Comprei pão OU leite' é o mesmo que 'NÃO comprei pão E NÃO comprei leite'.",
-          wisdomText: "A negação de uma disjunção é a conjunção das negações."
+          wisdomText: "A negação de uma disjunção é a conjunção das negações.",
+          availableStatements: [
+            { id: "s1", symbol: "\\sim (p \\lor q)" },
+            { id: "s2", symbol: "\\sim p \\land \\sim q" },
+            { id: "s3", symbol: "p \\implies q" }
+          ],
+          availableJustifications: [
+            { id: "j1", symbol: "\\text{Premissa}" },
+            { id: "j2", symbol: "\\text{De Morgan (Disjunção)}" }
+          ],
+          expectedProof: [
+            { statementId: "s1", justificationId: "j1" },
+            { statementId: "s2", justificationId: "j2" }
+          ]
         } as ProofBuilderPuzzle,
         {
           id: "1.4.2",
@@ -167,7 +180,28 @@ export const sector1: Sector = {
           title: "A Contrapositiva",
           directive: "Prove que p -> q equivale a ~q -> ~p.",
           example: "Exemplo: 'Se nasci no Brasil (p), sou sul-americano (q)' equivale a 'Se NÃO sou sul-americano (~q), NÃO nasci no Brasil (~p)'.",
-          wisdomText: "Se chove, molha. Se não molhou, não choveu. Lógica pura!"
+          wisdomText: "Se chove, molha. Se não molhou, não choveu. Lógica pura!",
+          availableStatements: [
+            { id: "s1", symbol: "p \\implies q" },
+            { id: "s2", symbol: "\\sim p \\lor q" },
+            { id: "s3", symbol: "q \\lor \\sim p" },
+            { id: "s4", symbol: "\\sim (\\sim q) \\lor \\sim p" },
+            { id: "s5", symbol: "\\sim q \\implies \\sim p" }
+          ],
+          availableJustifications: [
+            { id: "j1", symbol: "\\text{Premissa}" },
+            { id: "j2", symbol: "\\text{Def. Implicação}" },
+            { id: "j3", symbol: "\\text{Comutatividade}" },
+            { id: "j4", symbol: "\\text{Negação Dupla}" },
+            { id: "j5", symbol: "\\text{Def. Implicação (Inversa)}" }
+          ],
+          expectedProof: [
+            { statementId: "s1", justificationId: "j1" },
+            { statementId: "s2", justificationId: "j2" },
+            { statementId: "s3", justificationId: "j3" },
+            { statementId: "s4", justificationId: "j4" },
+            { statementId: "s5", justificationId: "j5" }
+          ]
         } as ProofBuilderPuzzle
       ]
     }

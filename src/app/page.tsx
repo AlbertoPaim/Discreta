@@ -89,20 +89,19 @@ export default function Home() {
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {mission.microPhases.map(phase => {
                           const isPhaseCompleted = unlockedMicroPhases.includes(phase.id);
-                          const isOnline = phase.puzzleType !== "ProofBuilder";
                           
                           return (
-                            <Link key={phase.id} href={isOnline ? `/fases/${phase.id}` : "#"}>
+                            <Link key={phase.id} href={`/fases/${phase.id}`}>
                               <Button 
                                 variant={isPhaseCompleted ? "default" : "outline"} 
-                                className={cn("w-full h-20 flex justify-start px-4 gap-3", !isOnline && "opacity-60")}
+                                className={cn("w-full h-20 flex justify-start px-4 gap-3")}
                               >
                                 {isPhaseCompleted ? <CheckCircle2 className="w-6 h-6 text-green-400 shrink-0" /> : <PlayCircle className="w-6 h-6 text-[var(--color-sci-accent)] shrink-0" />}
                                 <div className="text-left overflow-hidden">
                                   <div className="font-bold text-md flex items-center gap-2">
                                     Fase {phase.id}
-                                    <span className={cn("text-[10px] px-1 py-0.5 rounded border font-mono tracking-widest", isOnline ? "text-green-400 border-green-400/50" : "text-yellow-500 border-yellow-500/50")}>
-                                      {isOnline ? "ONLINE" : "EM CONSTRUÇÃO"}
+                                    <span className="text-[10px] px-1 py-0.5 rounded border font-mono tracking-widest text-green-400 border-green-400/50">
+                                      ONLINE
                                     </span>
                                   </div>
                                   <div className="text-xs opacity-80 truncate">{phase.title}</div>

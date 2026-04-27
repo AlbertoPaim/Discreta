@@ -82,6 +82,11 @@ export function FormulaForger({ phase, onSuccess }: FormulaForgerProps) {
           <p className="text-[var(--color-sci-text-muted)] text-lg">
             {phase.directive}
           </p>
+          {phase.example && (
+            <div className="mt-4 p-3 bg-[var(--color-sci-accent)]/10 border-l-4 border-[var(--color-sci-accent)] text-[var(--color-sci-text)] text-sm">
+              <strong className="tracking-widest uppercase block mb-1">Exemplo Prático:</strong> {phase.example}
+            </div>
+          )}
         </div>
       </div>
 

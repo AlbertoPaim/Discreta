@@ -29,7 +29,7 @@ export function SignalGenerator({ phase, onSuccess }: SignalGeneratorProps) {
     const containerRect = containerRef.current.getBoundingClientRect();
     
     const newPositions: Record<string, { x: number, y: number }> = {};
-    phase.sets.forEach(set => {
+    (phase.sets || []).forEach(set => {
       set.nodes.forEach(node => {
         const el = document.getElementById(`node-${node.id}`);
         if (el) {
@@ -77,8 +77,8 @@ export function SignalGenerator({ phase, onSuccess }: SignalGeneratorProps) {
           (e.from === nodeId && e.to === activeNode)
         );
 
-        const setIndex1 = phase.sets.findIndex(s => s.nodes.some(n => n.id === activeNode));
-        const setIndex2 = phase.sets.findIndex(s => s.nodes.some(n => n.id === nodeId));
+        const setIndex1 = (phase.sets || []).findIndex(s => s.nodes.some(n => n.id === activeNode));
+        const setIndex2 = (phase.sets || []).findIndex(s => s.nodes.some(n => n.id === nodeId));
 
         if (setIndex1 !== setIndex2) {
             if (existingEdgeIndex !== -1) {
@@ -231,6 +231,11 @@ export function SignalGenerator({ phase, onSuccess }: SignalGeneratorProps) {
           <p className="text-[var(--color-sci-text-muted)] text-lg">
             {phase.directive}
           </p>
+          {phase.example && (
+            <div className="mt-4 p-3 bg-[var(--color-sci-accent)]/10 border-l-4 border-[var(--color-sci-accent)] text-[var(--color-sci-text)] text-sm">
+              <strong className="tracking-widest uppercase block mb-1">Exemplo Prático:</strong> {phase.example}
+            </div>
+          )}
         </div>
       </div>
 
@@ -276,7 +281,7 @@ export function SignalGenerator({ phase, onSuccess }: SignalGeneratorProps) {
         </svg>
 
         {/* Sets & Nodes */}
-        {phase.sets.map((set) => (
+        {(phase.sets || []).map((set) => (
           <div key={set.id} className="flex flex-col items-center z-20">
             <h3 className="text-[var(--color-sci-text-muted)] mb-8 text-xl tracking-wider">Conjunto {set.label}</h3>
             <div className="flex flex-col gap-8">

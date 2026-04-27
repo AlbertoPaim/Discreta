@@ -23,6 +23,7 @@ export const sector6: Sector = {
             { id: "card_A_plus_card_B", symbol: "|A| + |B|" },
             { id: "card_A_times_card_B", symbol: "|A| \\times |B|" }
           ],
+          example: "Exemplo: Vou de carro (2 opções) OU de ônibus (3 opções). Como não posso ir nos dois ao mesmo tempo, tenho 2+3 = 5 formas de ir.",
           wisdomText: "Exclusividade significa que a interseção é vazia. A união é pura adição!"
         } as DefinitionPuzzle,
         {
@@ -38,6 +39,7 @@ export const sector6: Sector = {
             { id: "card_A_times_card_B", symbol: "|A| \\times |B|" },
             { id: "card_A_plus_card_B", symbol: "|A| + |B|" }
           ],
+          example: "Exemplo: Vou escolher 1 camisa (3 opções) E 1 calça (2 opções). O total de combinações visuais é 3 * 2 = 6.",
           wisdomText: "Para cada escolha no primeiro evento, você abre N novos caminhos no segundo. É uma árvore de multiplicação."
         } as DefinitionPuzzle
       ]
@@ -59,6 +61,7 @@ export const sector6: Sector = {
             { id: "n_squared", symbol: "n^2" },
             { id: "2_to_n", symbol: "2^n" }
           ],
+          example: "Exemplo: De quantas formas 3 pessoas formam uma fila? 3! = 3 * 2 * 1 = 6 formas diferentes.",
           wisdomText: "n opções para a 1ª vaga, (n-1) para a 2ª... O fatorial é o princípio multiplicativo levado ao extremo da fila!"
         } as DefinitionPuzzle,
         {
@@ -74,6 +77,7 @@ export const sector6: Sector = {
             { id: "n_fact_div_n_minus_p_fact", symbol: "\\frac{n!}{(n-p)!}" },
             { id: "C_np", symbol: "C_{n,p}" }
           ],
+          example: "Exemplo: Pódio (Ouro e Prata) para 10 corredores. A ordem importa! A(10,2) = 10! / 8! = 10 * 9 = 90 opções.",
           wisdomText: "O Arranjo corta o fatorial. Nós paramos de multiplicar assim que preenchemos as 'p' vagas."
         } as DefinitionPuzzle,
         {
@@ -89,6 +93,7 @@ export const sector6: Sector = {
             { id: "A_np_div_p_fact", symbol: "\\frac{A_{n,p}}{p!}" },
             { id: "A_np", symbol: "A_{n,p}" }
           ],
+          example: "Exemplo: Escolher 2 pessoas de 10 para uma dupla de trabalho. A ordem não importa! C(10,2) = 90 / 2! = 45 opções.",
           wisdomText: "Como a ordem não importa, a equipe {A,B} é a mesma que {B,A}. Dividimos pelo fatorial de p para 'apagar' essas permutações repetidas!"
         } as DefinitionPuzzle
       ]

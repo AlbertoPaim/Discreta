@@ -4,14 +4,14 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { useGameStore } from "@/store/gameStore";
-import { Terminal, ShieldAlert, Lock, Unlock, PlayCircle, Milestone } from "lucide-react";
+import { Terminal, ShieldAlert, Lock, Unlock, PlayCircle, Milestone, CheckCircle2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { sectorsData } from "@/lib/sectorsData";
 import { CodexSection } from "@/components/game/CodexSection";
 import { cn } from "@/lib/utils";
 
 export default function Home() {
-  const { xp, unlockedSectors, unlockedMicroPhases } = useGameStore();
+  const { xp, unlockedSectors, unlockedMicroPhases, lastActiveSector, setLastActiveSector } = useGameStore();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -54,22 +54,30 @@ export default function Home() {
 
       <div className="w-full space-y-8">
         {sectorsData.map(sector => {
-          const isSectorUnlocked = unlockedSectors.includes(sector.id);
+          const isOpen = lastActiveSector === sector.id;
 
           return (
-            <Card key={sector.id} className={cn("transition-colors", isSectorUnlocked ? "border-[var(--color-sci-border)] hover:border-[var(--color-sci-accent)] bg-black/60" : "border-dashed border-gray-800 bg-black/20 opacity-70")}>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3 text-xl md:text-2xl">
-                  {isSectorUnlocked ? <Unlock className="w-6 h-6 text-[var(--color-sci-accent)]" /> : <Lock className="w-6 h-6 text-gray-500" />}
-                  Setor {sector.id}: {sector.title}
+            <Card key={sector.id} className={cn("transition-colors", "border-[var(--color-sci-border)] hover:border-[var(--color-sci-accent)] bg-black/60")}>
+              <CardHeader 
+                className="cursor-pointer group"
+                onClick={() => setLastActiveSector(isOpen ? null : sector.id)}
+              >
+                <CardTitle className="flex items-center justify-between text-xl md:text-2xl group-hover:text-[var(--color-sci-accent)] transition-colors">
+                  <div className="flex items-center gap-3">
+                    <Unlock className="w-6 h-6 text-[var(--color-sci-accent)]" />
+                    Setor {sector.id}: {sector.title}
+                  </div>
+                  <div className="text-[var(--color-sci-accent)] text-sm font-mono border border-[var(--color-sci-accent)] px-2 py-1 rounded">
+                    {isOpen ? 'RECOLHER' : 'EXPANDIR'}
+                  </div>
                 </CardTitle>
                 <CardDescription className="text-base md:text-lg mt-2 text-[var(--color-sci-text-muted)] font-mono">
                   {sector.description}
                 </CardDescription>
               </CardHeader>
               
-              {isSectorUnlocked && sector.missions.length > 0 && (
-                <CardContent className="flex flex-col gap-8">
+              {isOpen && sector.missions.length > 0 && (
+                <CardContent className="flex flex-col gap-8 animate-in slide-in-from-top-4 duration-300">
                   {sector.missions.map(mission => (
                     <div key={mission.id} className="border-l-2 border-[var(--color-sci-accent)]/30 pl-4">
                       <div className="flex items-center gap-2 mb-4">
@@ -80,17 +88,23 @@ export default function Home() {
                       
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {mission.microPhases.map(phase => {
-                          const isPhaseUnlocked = unlockedMicroPhases.includes(phase.id);
+                          const isPhaseCompleted = unlockedMicroPhases.includes(phase.id);
+                          const isOnline = phase.puzzleType !== "ProofBuilder";
                           
                           return (
-                            <Link key={phase.id} href={isPhaseUnlocked ? `/fases/${phase.id}` : "#"} className={isPhaseUnlocked ? "" : "pointer-events-none"}>
+                            <Link key={phase.id} href={isOnline ? `/fases/${phase.id}` : "#"}>
                               <Button 
-                                variant={isPhaseUnlocked ? "default" : "outline"} 
-                                className={cn("w-full h-20 flex justify-start px-4 gap-3", !isPhaseUnlocked && "opacity-50")}
+                                variant={isPhaseCompleted ? "default" : "outline"} 
+                                className={cn("w-full h-20 flex justify-start px-4 gap-3", !isOnline && "opacity-60")}
                               >
-                                {isPhaseUnlocked ? <PlayCircle className="w-6 h-6 text-green-400 shrink-0" /> : <Lock className="w-6 h-6 shrink-0" />}
+                                {isPhaseCompleted ? <CheckCircle2 className="w-6 h-6 text-green-400 shrink-0" /> : <PlayCircle className="w-6 h-6 text-[var(--color-sci-accent)] shrink-0" />}
                                 <div className="text-left overflow-hidden">
-                                  <div className="font-bold text-md">Fase {phase.id}</div>
+                                  <div className="font-bold text-md flex items-center gap-2">
+                                    Fase {phase.id}
+                                    <span className={cn("text-[10px] px-1 py-0.5 rounded border font-mono tracking-widest", isOnline ? "text-green-400 border-green-400/50" : "text-yellow-500 border-yellow-500/50")}>
+                                      {isOnline ? "ONLINE" : "EM CONSTRUÇÃO"}
+                                    </span>
+                                  </div>
                                   <div className="text-xs opacity-80 truncate">{phase.title}</div>
                                 </div>
                               </Button>
@@ -102,7 +116,7 @@ export default function Home() {
                   ))}
                 </CardContent>
               )}
-              {isSectorUnlocked && sector.missions.length === 0 && (
+              {isOpen && sector.missions.length === 0 && (
                 <CardContent>
                   <p className="text-[var(--color-sci-text-muted)] font-mono italic">Módulos de treinamento em construção...</p>
                 </CardContent>

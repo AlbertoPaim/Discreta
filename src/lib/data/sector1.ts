@@ -22,6 +22,7 @@ export const sector1: Sector = {
             { id: "V_ou_F", symbol: "\\in \\{V, F\\}" },
             { id: "pergunta", symbol: "\\text{Pergunta}" }
           ],
+          example: "Exemplo: 'A Terra é redonda' (V) e '2 + 2 = 5' (F) são proposições. Já 'Que horas são?' não é.",
           wisdomText: "Exato! Uma proposição é uma sentença declarativa que pode ser classificada exclusivamente como Verdadeira ou Falsa."
         } as DefinitionPuzzle,
         {
@@ -37,6 +38,7 @@ export const sector1: Sector = {
             { id: "neg_p", symbol: "\\neg p" },
             { id: "land", symbol: "\\land" }
           ],
+          example: "Exemplo: Se p é 'Está chovendo', então ou p é verdadeiro (está), ou ~p é verdadeiro (não está).",
           wisdomText: "O Princípio do Terceiro Excluído garante que ou 'p' é verdade, ou sua negação é. Não há meio termo!"
         } as DefinitionPuzzle
       ]
@@ -58,6 +60,7 @@ export const sector1: Sector = {
             { id: "p", symbol: "p" },
             { id: "q", symbol: "q" }
           ],
+          example: "Exemplo: Se p = 'O céu é azul' (V), então a negação ~p = 'O céu NÃO é azul' (F).",
           wisdomText: "A negação troca Verdadeiro por Falso e vice-versa."
         } as DefinitionPuzzle,
         {
@@ -73,6 +76,7 @@ export const sector1: Sector = {
             { id: "q", symbol: "q" },
             { id: "lor", symbol: "\\lor" }
           ],
+          example: "Exemplo: A afirmação 'Trabalhei (p) E estudei (q)' só é verdade se eu fiz ambas as coisas.",
           wisdomText: "A conjunção (E) só é verdadeira quando ambos são verdadeiros."
         } as DefinitionPuzzle,
         {
@@ -88,6 +92,7 @@ export const sector1: Sector = {
             { id: "q", symbol: "q" },
             { id: "iff", symbol: "\\iff" }
           ],
+          example: "Exemplo: 'Se tirar nota 10 (p), te dou 50 reais (q)'. Eu só minto se você tirar 10 e eu não pagar.",
           wisdomText: "A condicional só é falsa se p for Verdadeiro e q for Falso (a promessa quebrada)."
         } as DefinitionPuzzle
       ]
@@ -108,6 +113,7 @@ export const sector1: Sector = {
             { id: "V", symbol: "\\text{Verdadeiro}" },
             { id: "F", symbol: "\\text{Falso}" }
           ],
+          example: "Exemplo: 'Se 2=3 (F), então o céu é verde (F)'. Essa frase inteira é Verdadeira vacuamente.",
           wisdomText: "Exatamente! Uma premissa falsa pode implicar qualquer coisa, a implicação é considerada verdadeira (Verdade Vacuamente)."
         } as DefinitionPuzzle,
         {
@@ -122,6 +128,7 @@ export const sector1: Sector = {
             { id: "V", symbol: "\\text{Verdadeiro}" },
             { id: "F", symbol: "\\text{Falso}" }
           ],
+          example: "Exemplo: 'Chove ou não chove' (p ∨ ~p). Em qualquer clima, a frase é Verdadeira.",
           wisdomText: "Uma tautologia é uma blindagem lógica: não importa o cenário, ela sempre se sustenta!"
         } as DefinitionPuzzle,
         {
@@ -136,6 +143,7 @@ export const sector1: Sector = {
             { id: "F", symbol: "\\text{Falsa}" },
             { id: "V", symbol: "\\text{Verdadeira}" }
           ],
+          example: "Exemplo: 'Chove e não chove aqui e agora' (p ∧ ~p). É impossível, sempre Falso.",
           wisdomText: "A contradição é o oposto da tautologia, sempre colapsa."
         } as DefinitionPuzzle
       ]
@@ -150,6 +158,7 @@ export const sector1: Sector = {
           puzzleType: "ProofBuilder",
           title: "As Leis de De Morgan",
           directive: "Prove que não(p ou q) é equivalente a (não p) e (não q).",
+          example: "Exemplo: Negar que 'Comprei pão OU leite' é o mesmo que 'NÃO comprei pão E NÃO comprei leite'.",
           wisdomText: "A negação de uma disjunção é a conjunção das negações."
         } as ProofBuilderPuzzle,
         {
@@ -157,6 +166,7 @@ export const sector1: Sector = {
           puzzleType: "ProofBuilder",
           title: "A Contrapositiva",
           directive: "Prove que p -> q equivale a ~q -> ~p.",
+          example: "Exemplo: 'Se nasci no Brasil (p), sou sul-americano (q)' equivale a 'Se NÃO sou sul-americano (~q), NÃO nasci no Brasil (~p)'.",
           wisdomText: "Se chove, molha. Se não molhou, não choveu. Lógica pura!"
         } as ProofBuilderPuzzle
       ]

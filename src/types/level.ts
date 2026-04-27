@@ -9,6 +9,7 @@ export interface BaseMicroPhase {
   id: string; // Ex: "3.1.1"
   title: string;
   directive: string;
+  example?: string;
   puzzleType: PuzzleType;
   wisdomText: string;
 }

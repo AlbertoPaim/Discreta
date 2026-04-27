@@ -10,9 +10,10 @@ import { useRouter } from "next/navigation";
 interface SignalGeneratorProps {
   phase: GraphConnectPuzzle;
   onSuccess: () => void;
+  onNext?: () => void;
 }
 
-export function SignalGenerator({ phase, onSuccess }: SignalGeneratorProps) {
+export function SignalGenerator({ phase, onSuccess, onNext }: SignalGeneratorProps) {
   const router = useRouter();
 
   const [edges, setEdges] = useState<GraphEdge[]>(phase.initialEdges || []);
@@ -283,7 +284,9 @@ export function SignalGenerator({ phase, onSuccess }: SignalGeneratorProps) {
         {/* Sets & Nodes */}
         {(phase.sets || []).map((set) => (
           <div key={set.id} className="flex flex-col items-center z-20">
-            <h3 className="text-[var(--color-sci-text-muted)] mb-8 text-xl tracking-wider">Conjunto {set.label}</h3>
+            <h3 className="text-[var(--color-sci-text-muted)] mb-8 text-xl tracking-wider font-bold">
+              <span className="hidden md:inline">Conjunto </span>{set.label}
+            </h3>
             <div className="flex flex-col gap-8">
               {set.nodes.map(node => {
                 const isSelected = selectedNodes.includes(node.id);
@@ -328,9 +331,16 @@ export function SignalGenerator({ phase, onSuccess }: SignalGeneratorProps) {
             <p className="text-lg text-[var(--color-sci-text)] leading-relaxed mb-8">
               {phase.wisdomText}
             </p>
-            <Button onClick={() => router.push('/')} className="w-full h-14 text-lg bg-green-600 hover:bg-green-500 text-white">
-              Retornar ao Hub Central
-            </Button>
+            <div className="flex flex-col gap-3">
+              {onNext && (
+                <Button onClick={onNext} className="w-full h-14 text-lg bg-green-600 hover:bg-green-500 text-white">
+                  Avançar para Próxima Fase
+                </Button>
+              )}
+              <Button onClick={() => router.push('/')} variant={onNext ? "outline" : "default"} className={cn("w-full h-14 text-lg", !onNext && "bg-green-600 hover:bg-green-500 text-white")}>
+                Retornar ao Hub Central
+              </Button>
+            </div>
           </div>
         </div>
       )}

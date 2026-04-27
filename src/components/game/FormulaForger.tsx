@@ -11,9 +11,10 @@ import { useRouter } from "next/navigation";
 interface FormulaForgerProps {
   phase: DefinitionPuzzle;
   onSuccess: () => void;
+  onNext?: () => void;
 }
 
-export function FormulaForger({ phase, onSuccess }: FormulaForgerProps) {
+export function FormulaForger({ phase, onSuccess, onNext }: FormulaForgerProps) {
   const router = useRouter();
 
   // slots state: array of length `slotsCount`, holding Rune objects or null
@@ -154,9 +155,16 @@ export function FormulaForger({ phase, onSuccess }: FormulaForgerProps) {
               {phase.wisdomText}
             </p>
 
-            <Button onClick={() => router.push('/')} className="w-full h-14 text-lg bg-green-600 hover:bg-green-500">
-              Retornar ao Hub Central
-            </Button>
+            <div className="flex flex-col gap-3">
+              {onNext && (
+                <Button onClick={onNext} className="w-full h-14 text-lg bg-green-600 hover:bg-green-500 text-white">
+                  Avançar para Próxima Fase
+                </Button>
+              )}
+              <Button onClick={() => router.push('/')} variant={onNext ? "outline" : "default"} className={cn("w-full h-14 text-lg", !onNext && "bg-green-600 hover:bg-green-500 text-white")}>
+                Retornar ao Hub Central
+              </Button>
+            </div>
           </div>
         </div>
       )}

@@ -28,28 +28,28 @@ export default function ClientPhasePage({ microPhaseId, phaseData }: ClientPhase
 
   if (!mounted) return null;
 
+  // Calcula a próxima fase para o botão "Avançar"
+  let foundCurrent = false;
+  let nextPhaseId: string | null = null;
+  
+  for (const sector of sectorsData) {
+    for (const mission of sector.missions) {
+      for (const phase of mission.microPhases) {
+        if (foundCurrent && !nextPhaseId) {
+          nextPhaseId = phase.id;
+          break;
+        }
+        if (phase.id === microPhaseId) {
+          foundCurrent = true;
+        }
+      }
+    }
+  }
+
   const handleSuccess = () => {
     if (!unlockedMicroPhases.includes(microPhaseId)) {
       addXp(150);
       unlockMicroPhase(microPhaseId);
-    }
-    
-    // Tentativa de desbloquear a próxima fase na ordem
-    let foundCurrent = false;
-    let nextPhaseId: string | null = null;
-    
-    for (const sector of sectorsData) {
-      for (const mission of sector.missions) {
-        for (const phase of mission.microPhases) {
-          if (foundCurrent && !nextPhaseId) {
-            nextPhaseId = phase.id;
-            break;
-          }
-          if (phase.id === microPhaseId) {
-            foundCurrent = true;
-          }
-        }
-      }
     }
 
     if (nextPhaseId && !unlockedMicroPhases.includes(nextPhaseId)) {
@@ -57,16 +57,24 @@ export default function ClientPhasePage({ microPhaseId, phaseData }: ClientPhase
     }
   };
 
+  const handleNextPhase = () => {
+    if (nextPhaseId) {
+      router.push(`/fases/${nextPhaseId}`);
+    }
+  };
+
+  const onNextProp = nextPhaseId ? handleNextPhase : undefined;
+
   // Renderização Dinâmica Baseada no PuzzleType
   switch (phaseData.puzzleType) {
     case 'Definition':
-      return <FormulaForger phase={phaseData as DefinitionPuzzle} onSuccess={handleSuccess} />;
+      return <FormulaForger phase={phaseData as DefinitionPuzzle} onSuccess={handleSuccess} onNext={onNextProp} />;
     
     case 'GraphConnect':
-      return <SignalGenerator phase={phaseData as GraphConnectPuzzle} onSuccess={handleSuccess} />;
+      return <SignalGenerator phase={phaseData as GraphConnectPuzzle} onSuccess={handleSuccess} onNext={onNextProp} />;
 
     case 'ProofBuilder':
-      return <ProofBuilder phase={phaseData as ProofBuilderPuzzle} onSuccess={handleSuccess} />;
+      return <ProofBuilder phase={phaseData as ProofBuilderPuzzle} onSuccess={handleSuccess} onNext={onNextProp} />;
 
     default:
       return <div>Tipo de Puzzle Desconhecido</div>;

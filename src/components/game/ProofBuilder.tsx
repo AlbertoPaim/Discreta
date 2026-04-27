@@ -11,9 +11,10 @@ import { useRouter } from "next/navigation";
 interface ProofBuilderProps {
   phase: ProofBuilderPuzzle;
   onSuccess: () => void;
+  onNext?: () => void;
 }
 
-export function ProofBuilder({ phase, onSuccess }: ProofBuilderProps) {
+export function ProofBuilder({ phase, onSuccess, onNext }: ProofBuilderProps) {
   const router = useRouter();
 
   const [steps, setSteps] = useState<{ statementId: string | null, justificationId: string | null }[]>(
@@ -199,9 +200,16 @@ export function ProofBuilder({ phase, onSuccess }: ProofBuilderProps) {
               {phase.wisdomText}
             </p>
 
-            <Button onClick={() => router.push('/')} className="w-full h-14 text-lg bg-green-600 hover:bg-green-500">
-              Retornar ao Hub Central
-            </Button>
+            <div className="flex flex-col gap-3">
+              {onNext && (
+                <Button onClick={onNext} className="w-full h-14 text-lg bg-green-600 hover:bg-green-500 text-white">
+                  Avançar para Próxima Fase
+                </Button>
+              )}
+              <Button onClick={() => router.push('/')} variant={onNext ? "outline" : "default"} className={cn("w-full h-14 text-lg", !onNext && "bg-green-600 hover:bg-green-500 text-white")}>
+                Retornar ao Hub Central
+              </Button>
+            </div>
           </div>
         </div>
       )}

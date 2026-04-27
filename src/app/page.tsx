@@ -21,6 +21,23 @@ export default function Home() {
 
   if (!mounted) return null; // Previne hydration mismatch
 
+  let totalPhases = 0;
+  let firstLockedPhaseId: string | null = null;
+
+  for (const sector of sectorsData) {
+    for (const mission of sector.missions) {
+      for (const phase of mission.microPhases) {
+        totalPhases++;
+        if (!unlockedMicroPhases.includes(phase.id) && !firstLockedPhaseId) {
+          firstLockedPhaseId = phase.id;
+        }
+      }
+    }
+  }
+
+  const progressPercentage = totalPhases > 0 ? Math.round((unlockedMicroPhases.length / totalPhases) * 100) : 0;
+  const phaseToContinue = firstLockedPhaseId || (unlockedMicroPhases.length > 0 ? unlockedMicroPhases[unlockedMicroPhases.length - 1] : null);
+
   return (
     <main className="flex-1 flex flex-col items-center justify-start p-4 md:p-8 max-w-5xl mx-auto w-full">
       <div className="text-center mb-12 animate-pulse-slow mt-4 md:mt-8">
@@ -40,15 +57,40 @@ export default function Home() {
             Status do Operador
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-col md:flex-row justify-around items-center font-mono text-lg gap-4">
-          <div className="flex items-center gap-4">
-            <span className="text-[var(--color-sci-text-muted)]">Nível de Experiência:</span>
-            <span className="text-3xl font-bold text-[var(--color-sci-success)]">{xp} XP</span>
+        <CardContent className="flex flex-col gap-6">
+          <div className="flex justify-between items-end font-mono">
+            <div>
+              <p className="text-[var(--color-sci-text-muted)] mb-1">Nível de Progresso</p>
+              <div className="text-4xl font-bold text-[var(--color-sci-accent)]">
+                {progressPercentage}%
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-[var(--color-sci-text-muted)] mb-1">XP Acumulado</p>
+              <div className="text-2xl text-[var(--color-sci-success)]">
+                {xp} XP
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="text-[var(--color-sci-text-muted)]">Micro-Fases Dominadas:</span>
-            <span className="text-2xl text-[var(--color-sci-accent)]">{unlockedMicroPhases.length}</span>
+
+          <div className="w-full bg-black border border-[var(--color-sci-border)] rounded-full h-4 overflow-hidden relative">
+            <div
+              className="bg-[var(--color-sci-accent)] h-full transition-all duration-1000 ease-out relative"
+              style={{ width: `${progressPercentage}%` }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent w-full animate-pulse-slow"></div>
+            </div>
           </div>
+
+          {phaseToContinue && (
+            <div className="flex justify-center mt-2">
+              <Link href={`/fases/${phaseToContinue}`}>
+                <Button className="w-full md:w-auto h-12 px-8 text-lg bg-[var(--color-sci-accent)] text-black hover:bg-[var(--color-sci-accent)]/80">
+                  {firstLockedPhaseId ? `Continuar da Fase ${phaseToContinue}` : 'Revisar Última Fase'}
+                </Button>
+              </Link>
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -58,7 +100,7 @@ export default function Home() {
 
           return (
             <Card key={sector.id} className={cn("transition-colors", "border-[var(--color-sci-border)] hover:border-[var(--color-sci-accent)] bg-black/60")}>
-              <CardHeader 
+              <CardHeader
                 className="cursor-pointer group"
                 onClick={() => setLastActiveSector(isOpen ? null : sector.id)}
               >
@@ -75,7 +117,7 @@ export default function Home() {
                   {sector.description}
                 </CardDescription>
               </CardHeader>
-              
+
               {isOpen && sector.missions.length > 0 && (
                 <CardContent className="flex flex-col gap-8 animate-in slide-in-from-top-4 duration-300">
                   {sector.missions.map(mission => (
@@ -85,15 +127,15 @@ export default function Home() {
                         <h3 className="text-xl font-bold text-[var(--color-sci-text)]">Missão {mission.id}: {mission.title}</h3>
                       </div>
                       <p className="text-[var(--color-sci-text-muted)] text-sm mb-4">{mission.description}</p>
-                      
+
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {mission.microPhases.map(phase => {
                           const isPhaseCompleted = unlockedMicroPhases.includes(phase.id);
-                          
+
                           return (
                             <Link key={phase.id} href={`/fases/${phase.id}`}>
-                              <Button 
-                                variant={isPhaseCompleted ? "default" : "outline"} 
+                              <Button
+                                variant={isPhaseCompleted ? "default" : "outline"}
                                 className={cn("w-full h-20 flex justify-start px-4 gap-3")}
                               >
                                 {isPhaseCompleted ? <CheckCircle2 className="w-6 h-6 text-green-400 shrink-0" /> : <PlayCircle className="w-6 h-6 text-[var(--color-sci-accent)] shrink-0" />}

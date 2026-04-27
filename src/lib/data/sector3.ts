@@ -1,4 +1,9 @@
-import { Sector, DefinitionPuzzle, GraphConnectPuzzle, ProofBuilderPuzzle } from "@/types/level";
+import { Sector, DefinitionPuzzle, GraphConnectPuzzle, ProofBuilderPuzzle, GraphSet } from "@/types/level";
+
+const setA: GraphSet = { id: "A", label: "A", nodes: [{id:"1", label:"1"}, {id:"2", label:"2"}, {id:"3", label:"3"}] };
+const setB: GraphSet = { id: "B", label: "B", nodes: [{id:"a", label:"a"}, {id:"b", label:"b"}, {id:"c", label:"c"}, {id:"d", label:"d"}] };
+const setC: GraphSet = { id: "C", label: "C", nodes: [{id:"x", label:"x"}, {id:"y", label:"y"}, {id:"z", label:"z"}] };
+
 
 export const sector3: Sector = {
   id: 3,
@@ -38,10 +43,10 @@ export const sector3: Sector = {
       title: "O Gerador de Sinais",
       description: "Exemplos Concretos de Funções usando Mapeamento Visual.",
       microPhases: [
-        { id: "3.2.1", puzzleType: "GraphConnect", title: "Instanciar Conjuntos A e B", directive: "Crie nós de energia para os conjuntos A={1,2,3} e B={a,b,c,d}.", wisdomText: "Conjuntos instanciados." } as GraphConnectPuzzle,
-        { id: "3.2.2", puzzleType: "GraphConnect", title: "Ligar as Arestas", directive: "Conecte os cabos para definir f(1)=a, f(2)=b, f(3)=a.", wisdomText: "Função mapeada visualmente!" } as GraphConnectPuzzle,
-        { id: "3.2.3", puzzleType: "GraphConnect", title: "Selecionar Subconjuntos", directive: "Isole X={1,2} em A e Y={a,c} em B.", wisdomText: "Subconjuntos isolados no radar." } as GraphConnectPuzzle,
-        { id: "3.2.4", puzzleType: "GraphConnect", title: "Determinar Imagem e Pré-imagem", directive: "Determine visualmente f[X] e f⁻¹[Y] baseado nas ligações ativas.", wisdomText: "Mapeamento bidirecional confirmado!" } as GraphConnectPuzzle,
+        { id: "3.2.1", puzzleType: "GraphConnect", title: "Primeiro Contato", directive: "Ative o portal ligando o nó 1 de A ao nó 'a' de B.", sets: [setA, setB], mode: 'connect', initialEdges: [], expectedEdges: [{from: '1', to: 'a'}], validationRule: 'exact_edges', wisdomText: "Portal ativado! Você estabeleceu uma relação entre os conjuntos." } as GraphConnectPuzzle,
+        { id: "3.2.2", puzzleType: "GraphConnect", title: "Ligar as Arestas", directive: "Conecte os cabos para definir f(1)=a, f(2)=b, f(3)=a.", sets: [setA, setB], mode: 'connect', initialEdges: [], expectedEdges: [{from: '1', to: 'a'}, {from: '2', to: 'b'}, {from: '3', to: 'a'}], validationRule: 'exact_edges', wisdomText: "Função mapeada visualmente!" } as GraphConnectPuzzle,
+        { id: "3.2.3", puzzleType: "GraphConnect", title: "Selecionar Subconjuntos", directive: "Isole (selecione) os nós X={1,2} em A e Y={a,c} em B.", sets: [setA, setB], mode: 'select', initialEdges: [], expectedSelection: ['1', '2', 'a', 'c'], validationRule: 'exact_selection', wisdomText: "Subconjuntos isolados no radar." } as GraphConnectPuzzle,
+        { id: "3.2.4", puzzleType: "GraphConnect", title: "Determinar Imagem e Pré-imagem", directive: "Dada a função f já mapeada, selecione a imagem de X={1,2} e a pré-imagem de Y={b,d}.", sets: [setA, setB], mode: 'select', initialEdges: [{from:'1',to:'a'}, {from:'2',to:'b'}, {from:'3',to:'b'}], expectedSelection: ['a', 'b', '2', '3'], validationRule: 'exact_selection', wisdomText: "Mapeamento bidirecional confirmado!" } as GraphConnectPuzzle,
       ]
     },
     {
@@ -49,8 +54,8 @@ export const sector3: Sector = {
       title: "Falhas e Contraexemplos Iniciais",
       description: "Derrube propriedades criando mapeamentos específicos.",
       microPhases: [
-        { id: "3.3.1", puzzleType: "GraphConnect", title: "O Colapso (Falha Injetora)", directive: "Crie uma ligação onde dois elementos distintos do domínio apontam para o mesmo alvo.", wisdomText: "Injetividade quebrada! Ocorreu um colapso no sinal." } as GraphConnectPuzzle,
-        { id: "3.3.2", puzzleType: "GraphConnect", title: "O Fio Desconectado (Falha Sobrejetora)", directive: "Deixe um elemento do contradomínio sem pré-imagem conectada.", wisdomText: "Sobrejetividade anulada! Há energia ociosa em B." } as GraphConnectPuzzle,
+        { id: "3.3.1", puzzleType: "GraphConnect", title: "O Colapso (Falha Injetora)", directive: "Crie uma função válida f: A -> B, mas force uma falha injetora (dois elementos distintos do domínio apontam para o mesmo alvo).", sets: [setA, setB], mode: 'connect', initialEdges: [], validationRule: 'not_injective', wisdomText: "Injetividade quebrada! Ocorreu um colapso no sinal." } as GraphConnectPuzzle,
+        { id: "3.3.2", puzzleType: "GraphConnect", title: "O Fio Desconectado (Falha Sobrejetora)", directive: "Crie uma função válida f: A -> B, mas deixe pelo menos um elemento do contradomínio sem pré-imagem conectada.", sets: [setA, setB], mode: 'connect', initialEdges: [], validationRule: 'not_surjective', wisdomText: "Sobrejetividade anulada! Há energia ociosa em B." } as GraphConnectPuzzle,
       ]
     },
     {
@@ -60,8 +65,8 @@ export const sector3: Sector = {
       microPhases: [
         { id: "3.4.1", puzzleType: "ProofBuilder", title: "Inclusão da Imagem da Pré-imagem", directive: "Prove que f[f⁻¹[Y]] ⊆ Y.", wisdomText: "Prova concluída com rigor matemático!" } as ProofBuilderPuzzle,
         { id: "3.4.2", puzzleType: "ProofBuilder", title: "Inclusão da Pré-imagem da Imagem", directive: "Prove que X ⊆ f⁻¹[f[X]].", wisdomText: "Demostração imbatível forjada!" } as ProofBuilderPuzzle,
-        { id: "3.4.3", puzzleType: "GraphConnect", title: "Contraexemplo da Igualdade (Sobrejetividade)", directive: "Apresente um contraexemplo visual onde f[f⁻¹[Y]] ≠ Y (requer falha de sobrejetividade).", wisdomText: "Falha explorada com sucesso!" } as GraphConnectPuzzle,
-        { id: "3.4.4", puzzleType: "GraphConnect", title: "Contraexemplo da Igualdade (Injetividade)", directive: "Apresente um contraexemplo visual onde X ≠ f⁻¹[f[X]] (requer falha de injetividade).", wisdomText: "Contraexemplo incontestável construído!" } as GraphConnectPuzzle,
+        { id: "3.4.3", puzzleType: "GraphConnect", title: "Contraexemplo da Igualdade (Sobrejetividade)", directive: "Apresente um contraexemplo visual para f[f⁻¹[Y]] = Y criando uma função onde f[f⁻¹[B]] ≠ B (requer falha de sobrejetividade).", sets: [setA, setB], mode: 'connect', initialEdges: [], validationRule: 'not_surjective', wisdomText: "Falha explorada com sucesso!" } as GraphConnectPuzzle,
+        { id: "3.4.4", puzzleType: "GraphConnect", title: "Contraexemplo da Igualdade (Injetividade)", directive: "Apresente um contraexemplo visual para X = f⁻¹[f[X]] criando uma função onde A ≠ f⁻¹[f[A]] (requer falha de injetividade).", sets: [setA, setB], mode: 'connect', initialEdges: [], validationRule: 'not_injective', wisdomText: "Contraexemplo incontestável construído!" } as GraphConnectPuzzle,
         { 
           id: "3.4.5", 
           puzzleType: "Definition", 
@@ -101,8 +106,8 @@ export const sector3: Sector = {
         } as DefinitionPuzzle,
         { id: "3.5.2", puzzleType: "ProofBuilder", title: "Composição Injetora", directive: "Prove que se g ∘ f é injetora, então f é obrigatoriamente injetora.", wisdomText: "Dedução impecável! Se não houver colisão no final, não pode ter havido no início." } as ProofBuilderPuzzle,
         { id: "3.5.3", puzzleType: "ProofBuilder", title: "Composição Sobrejetora", directive: "Prove que se g ∘ f é sobrejetora, então g é obrigatoriamente sobrejetora.", wisdomText: "Lógica irrefutável! O último passo da jornada precisa cobrir todo o destino." } as ProofBuilderPuzzle,
-        { id: "3.5.4", puzzleType: "GraphConnect", title: "Refutando f(x) via Composição", directive: "Construa um gráfico onde g ∘ f é injetora, mas g NÃO é injetora.", wisdomText: "Contraexemplo genial! O que acontece na camada de g que f não alcança não afeta a injetividade da composição." } as GraphConnectPuzzle,
-        { id: "3.5.5", puzzleType: "GraphConnect", title: "Refutando g(x) via Composição", directive: "Construa um gráfico onde g ∘ f é sobrejetora, mas f NÃO é sobrejetora.", wisdomText: "Isso mesmo! 'f' não precisa cobrir todo o conjunto intermediário para que 'g' alcance o destino final inteiro." } as GraphConnectPuzzle,
+        { id: "3.5.4", puzzleType: "GraphConnect", title: "Refutando f(x) via Composição", directive: "Crie ligações para f (A->B) e g (B->C) de forma que g ∘ f seja injetora, mas g NÃO seja injetora.", sets: [setA, setB, setC], mode: 'connect', initialEdges: [], validationRule: 'composition_inj_not_inj', wisdomText: "Contraexemplo genial! O que acontece na camada de g que f não alcança não afeta a injetividade da composição." } as GraphConnectPuzzle,
+        { id: "3.5.5", puzzleType: "GraphConnect", title: "Refutando g(x) via Composição", directive: "Crie ligações para f e g de forma que g ∘ f seja sobrejetora, mas f NÃO seja sobrejetora.", sets: [setA, setB, setC], mode: 'connect', initialEdges: [], validationRule: 'composition_surj_not_surj', wisdomText: "Isso mesmo! 'f' não precisa cobrir todo o conjunto intermediário para que 'g' alcance o destino final inteiro." } as GraphConnectPuzzle,
       ]
     }
   ]

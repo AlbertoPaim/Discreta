@@ -20,10 +20,38 @@ export interface DefinitionPuzzle extends BaseMicroPhase {
   availableRunes: Rune[];
 }
 
-// Futuras implementações para Missão 2 e 3
+export type GraphValidationRule = 
+  | 'exact_edges' 
+  | 'not_injective' 
+  | 'not_surjective' 
+  | 'exact_selection'
+  | 'composition_inj_not_inj'
+  | 'composition_surj_not_surj';
+
+export interface GraphNode {
+  id: string;
+  label: string;
+}
+
+export interface GraphSet {
+  id: string;
+  label: string;
+  nodes: GraphNode[];
+}
+
+export interface GraphEdge {
+  from: string;
+  to: string;
+}
+
 export interface GraphConnectPuzzle extends BaseMicroPhase {
   puzzleType: 'GraphConnect';
-  // Dados específicos do grafo
+  sets: GraphSet[];
+  mode: 'connect' | 'select'; 
+  initialEdges: GraphEdge[];
+  expectedEdges?: GraphEdge[];
+  expectedSelection?: string[]; 
+  validationRule: GraphValidationRule;
 }
 
 export interface ProofBuilderPuzzle extends BaseMicroPhase {

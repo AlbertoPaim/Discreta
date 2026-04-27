@@ -93,7 +93,7 @@ export function FormulaForger({ phase, onSuccess }: FormulaForgerProps) {
               key={i}
               onClick={() => handleSlotClick(i)}
               className={cn(
-                "w-24 h-24 md:w-32 md:h-32 flex items-center justify-center border-2 rounded-md cursor-pointer transition-all",
+                "min-w-24 min-h-24 md:min-w-32 md:min-h-32 h-auto w-auto px-4 py-4 flex items-center justify-center border-2 rounded-md cursor-pointer transition-all",
                 slot
                   ? "border-[var(--color-sci-accent)] bg-[var(--color-sci-surface)] shadow-[0_0_15px_rgba(0,229,255,0.2)] text-2xl"
                   : "border-dashed border-[var(--color-sci-border)] bg-black/40 hover:border-[var(--color-sci-text)]",
@@ -121,12 +121,12 @@ export function FormulaForger({ phase, onSuccess }: FormulaForgerProps) {
         <h3 className="text-center text-[var(--color-sci-text-muted)] mb-4 uppercase tracking-widest text-sm">
           Runas Disponíveis
         </h3>
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+        <div className="flex flex-wrap justify-center gap-3">
           {availableRunes.map(rune => (
             <div
               key={rune.id}
               onClick={() => handleRuneClick(rune)}
-              className="p-4 border border-[var(--color-sci-border)] rounded-md bg-black/60 cursor-pointer hover:bg-[var(--color-sci-surface)] hover:border-[var(--color-sci-accent)] transition-colors flex items-center justify-center text-xl h-20"
+              className="p-4 min-w-[5rem] h-auto min-h-[5rem] border border-[var(--color-sci-border)] rounded-md bg-black/60 cursor-pointer hover:bg-[var(--color-sci-surface)] hover:border-[var(--color-sci-accent)] transition-colors flex items-center justify-center text-xl"
             >
               <BlockMath math={rune.symbol} />
             </div>
